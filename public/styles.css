@@ -1,14 +1,16 @@
 :root {
     --primary-color: #1DA1F2;
-    --background-color: #15202B;
-    --secondary-background: #192734;
+    --background-color: #214778;
+    --secondary-background: #2c5a94;
     --text-color: #FFFFFF;
-    --secondary-text-color: #8899A6;
-    --border-color: #38444D;
+    --secondary-text-color: #b0c4de;
+    --border-color: #3a6ca5;
+    --hover-color: #4682b4;
+    --bs-dark-rgb: 33, 71, 120;
 }
 
 body {
-    background-color: var(--background-color);
+    background-color: #214778 !important;
     color: var(--text-color);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
@@ -21,6 +23,18 @@ body {
 .navbar-brand {
     color: var(--primary-color) !important;
     font-weight: bold;
+}
+
+.navbar-brand i {
+    margin-right: 5px;
+}
+
+.nav-link {
+    color: var(--text-color) !important;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
 }
 
 .card {
@@ -42,8 +56,8 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #1991DB;
-    border-color: #1991DB;
+    background-color: var(--hover-color);
+    border-color: var(--hover-color);
 }
 
 .form-control {
@@ -61,4 +75,68 @@ body {
 
 .text-muted {
     color: var(--secondary-text-color) !important;
+}
+
+.modal-content {
+    background-color: var(--secondary-background);
+    border-color: var(--border-color);
+}
+
+.modal-header {
+    border-bottom-color: var(--border-color);
+}
+
+.modal-footer {
+    border-top-color: var(--border-color);
+}
+
+.btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--hover-color);
+    text-decoration: underline;
+}
+
+.lead {
+    color: var(--secondary-text-color);
+}
+
+/* Additional styles for better readability */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color);
+}
+
+.form-label {
+    color: var(--secondary-text-color);
+}
+
+.navbar-toggler {
+    border-color: var(--border-color);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Adjust placeholder text color for better visibility */
+::placeholder {
+    color: var(--secondary-text-color) !important;
+    opacity: 0.7;
+}
+
+/* Styles for form validation feedback */
+.invalid-feedback {
+    color: #ff6b6b;
+}
+
+.form-control.is-invalid {
+    border-color: #ff6b6b;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23ff6b6b'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ff6b6b' stroke='none'/%3e%3c/svg%3e");
 }
