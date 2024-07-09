@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
-const path = require("path");
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
@@ -18,11 +18,14 @@ mongoose
 	.catch((err) => console.error("Could not connect to MongoDB", err));
 
 // Middleware
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+
+const { ensureAuthenticated } = require("./middleware/authMiddleware");
+
+app.use("/posts", ensureAuthenticated, postRoutes);
+app.use("/users", ensureAuthenticated, userRoutes);
 
 // Session configuration
 app.use(
@@ -39,9 +42,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.get("/", (req, res) => {
-	res.render("index");
-});
+const authRoutes = require("./routes/auth");
+const postRoutes = require("./routes/posts");
+const userRoutes = require("./routes/users");
+
+app.use("/api/auth", authRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/users", userRoutes);
+
+// Serve static files from the 'public' directory
+app.use(express.static("public"));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
