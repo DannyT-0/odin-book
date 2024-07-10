@@ -1,6 +1,6 @@
 const express = require("express");
 const Post = require("../models/Post");
-const { ensureAuthenticated } = require("../middleware/auth");
+const { ensureAuthenticated } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.get("/", ensureAuthenticated, async (req, res) => {

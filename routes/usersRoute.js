@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("../models/User");
-const { ensureAuthenticated } = require("../middleware/auth");
+const { ensureAuthenticated } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.get("/", ensureAuthenticated, async (req, res) => {

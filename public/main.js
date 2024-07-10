@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 });
 
+const API_BASE_URL = "http://localhost:3000";
+
 async function handleLogin(e) {
 	e.preventDefault();
 	if (!validateForm("loginForm")) return;
@@ -22,19 +24,31 @@ async function handleLogin(e) {
 	const password = document.getElementById("loginPassword").value;
 
 	try {
-		const response = await fetch("/api/auth/login", {
+		const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({ email, password }),
+			credentials: "include",
 		});
 
-		const data = await response.json();
+		const text = await response.text();
+		console.log("Response status:", response.status);
+		console.log("Response text:", text);
+
+		let data;
+		try {
+			data = JSON.parse(text);
+		} catch (parseError) {
+			console.error("Error parsing JSON:", parseError);
+			alert(`An error occurred. Server response: ${text}`);
+			return;
+		}
 
 		if (response.ok) {
 			alert("Logged in successfully!");
-			window.location.href = "/posts";
+			window.location.href = `${API_BASE_URL}/posts.html`;
 		} else {
 			alert(data.message || "Login failed. Please try again.");
 		}
@@ -61,7 +75,7 @@ async function handleRegister(e) {
 	}
 
 	try {
-		const response = await fetch("/api/auth/signup", {
+		const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -69,12 +83,25 @@ async function handleRegister(e) {
 			body: JSON.stringify({ username, email, password }),
 		});
 
-		const data = await response.json();
+		console.log("Response status:", response.status);
+		console.log("Response headers:", response.headers);
+
+		const text = await response.text();
+		console.log("Response text:", text);
+
+		let data;
+		try {
+			data = JSON.parse(text);
+		} catch (parseError) {
+			console.error("Error parsing JSON:", parseError);
+			alert("An error occurred. Please try again later.");
+			return;
+		}
 
 		if (response.ok) {
 			alert("Registered successfully! Please log in.");
-			$("#registerModal").modal("hide");
-			$("#loginModal").modal("show");
+			document.getElementById("registerModal").style.display = "none";
+			document.getElementById("loginModal").style.display = "block";
 		} else {
 			alert(data.message || "Registration failed. Please try again.");
 		}
@@ -91,7 +118,7 @@ async function handleForgotPassword(e) {
 	const email = document.getElementById("forgotEmail").value;
 
 	try {
-		const response = await fetch("/api/auth/forgot-password", {
+		const response = await fetch(`${API_BASE_URL}/api/auth/forgot-password`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -99,11 +126,22 @@ async function handleForgotPassword(e) {
 			body: JSON.stringify({ email }),
 		});
 
-		const data = await response.json();
+		const text = await response.text();
+		console.log("Response status:", response.status);
+		console.log("Response text:", text);
+
+		let data;
+		try {
+			data = JSON.parse(text);
+		} catch (parseError) {
+			console.error("Error parsing JSON:", parseError);
+			alert(`An error occurred. Server response: ${text}`);
+			return;
+		}
 
 		if (response.ok) {
 			alert("Password reset instructions have been sent to your email.");
-			$("#forgotPasswordModal").modal("hide");
+			document.getElementById("forgotPasswordModal").style.display = "none";
 		} else {
 			alert(
 				data.message || "Failed to process your request. Please try again."
