@@ -50,4 +50,23 @@ router.post("/:id/comment", ensureAuthenticated, async (req, res) => {
 	}
 });
 
+router.delete("/:id", ensureAuthenticated, async (req, res) => {
+	try {
+		const post = await Post.findById(req.params.id);
+		if (!post) {
+			return res.status(404).json({ error: "Post not found" });
+		}
+		if (post.author.toString() !== req.user._id.toString()) {
+			return res
+				.status(403)
+				.json({ error: "Not authorized to delete this post" });
+		}
+		await Post.findByIdAndDelete(req.params.id);
+		res.json({ message: "Post deleted successfully" });
+	} catch (err) {
+		console.error("Error deleting post:", err);
+		res.status(500).json({ error: "Error deleting post" });
+	}
+});
+
 module.exports = router;

@@ -12,6 +12,16 @@ router.get("/", ensureAuthenticated, async (req, res) => {
 	}
 });
 
+router.get("/profile", ensureAuthenticated, async (req, res) => {
+	try {
+		const user = await User.findById(req.user._id).select("-password");
+		res.json(user);
+	} catch (err) {
+		console.error("Error fetching user profile:", err);
+		res.status(500).json({ error: "Error fetching user profile" });
+	}
+});
+
 router.get("/:id", ensureAuthenticated, async (req, res) => {
 	try {
 		const user = await User.findById(req.params.id, "-password").populate(
@@ -52,6 +62,16 @@ router.post("/:id/accept-follow", ensureAuthenticated, async (req, res) => {
 		res.json({ message: "Follow request accepted" });
 	} catch (err) {
 		res.status(400).json({ error: "Error accepting follow request" });
+	}
+});
+
+router.post("/update-bio", ensureAuthenticated, async (req, res) => {
+	try {
+		const { bio } = req.body;
+		await User.findByIdAndUpdate(req.user._id, { bio });
+		res.json({ message: "Bio updated successfully" });
+	} catch (err) {
+		res.status(400).json({ error: "Error updating bio" });
 	}
 });
 
