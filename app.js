@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const passport = require("/Users/danny/Desktop/Odin/odin-book/config/passport.js");
+const passport = require("./config/passport.js");
 const cors = require("cors");
 const path = require("path");
 require("dotenv").config();
