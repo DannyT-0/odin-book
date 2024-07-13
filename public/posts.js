@@ -13,9 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		.addEventListener("click", handleEditBio);
 });
 
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://odin-book-production-f32c.up.railway.app";
 
-// In posts.js
 async function fetchUserProfile() {
 	try {
 		const response = await fetch(`${API_BASE_URL}/api/users/profile`, {
@@ -27,6 +26,7 @@ async function fetchUserProfile() {
 			userData.bio || "No bio available.";
 	} catch (error) {
 		console.error("Error fetching user profile:", error);
+		console.error("Error details:", error.message, error.stack);
 	}
 }
 
@@ -92,6 +92,7 @@ async function fetchPosts() {
 		displayPosts(posts);
 	} catch (error) {
 		console.error("Error fetching posts:", error);
+		console.error("Error details:", error.message, error.stack);
 	}
 }
 
