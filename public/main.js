@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 });
 
-const API_BASE_URL = "odin-book-production-f32c.up.railway.app";
+const API_BASE_URL = "https://odin-book-production-f32c.up.railway.app";
 
 async function handleLogin(e) {
 	e.preventDefault();
@@ -54,6 +54,7 @@ async function handleLogin(e) {
 		}
 	} catch (error) {
 		console.error("Login error:", error);
+		console.error("Error details:", error.message, error.stack);
 		alert("An error occurred. Please try again later.");
 	}
 }
