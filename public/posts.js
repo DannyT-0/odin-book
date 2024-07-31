@@ -11,6 +11,62 @@ document.addEventListener("DOMContentLoaded", () => {
 	document
 		.getElementById("editBioBtn")
 		.addEventListener("click", handleEditBio);
+
+	// Add this to your existing document.addEventListener("DOMContentLoaded", ...) function
+	document
+		.getElementById("sendButton")
+		.addEventListener("click", handleChatSend);
+	document
+		.getElementById("userInput")
+		.addEventListener("keypress", function (event) {
+			if (event.key === "Enter" && !event.shiftKey) {
+				event.preventDefault();
+				handleChatSend();
+			}
+		});
+
+	async function handleChatSend() {
+		const userInput = document.getElementById("userInput");
+		const chatBox = document.getElementById("chatBox");
+		const message = userInput.value.trim();
+
+		if (message) {
+			// Add user message to chat
+			appendMessage(message, "user-message");
+			userInput.value = "";
+
+			try {
+				// Send message to ChatGPT API
+				const response = await fetch(`${API_BASE_URL}/api/chat`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ message }),
+					credentials: "include",
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+					// Add AI response to chat
+					appendMessage(data.response, "ai-message");
+				} else {
+					console.error("Error getting chat response");
+				}
+			} catch (error) {
+				console.error("Error in chat:", error);
+			}
+		}
+	}
+
+	function appendMessage(message, className) {
+		const chatBox = document.getElementById("chatBox");
+		const messageElement = document.createElement("div");
+		messageElement.classList.add("chat-message", className);
+		messageElement.textContent = message;
+		chatBox.appendChild(messageElement);
+		chatBox.scrollTop = chatBox.scrollHeight;
+	}
 });
 
 const API_BASE_URL = "https://odin-book-production-f32c.up.railway.app";

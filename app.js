@@ -52,10 +52,12 @@ const { ensureAuthenticated } = require("./middleware/authMiddleware");
 const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/postsRoute");
 const userRoutes = require("./routes/usersRoute");
+const chatRoutes = require("./routes/chatRoute");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/chat", chatRoutes);
 
 app.use("/postsRoute", ensureAuthenticated, postRoutes);
 app.use("/usersRoute", ensureAuthenticated, userRoutes);
